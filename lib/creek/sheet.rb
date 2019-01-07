@@ -102,9 +102,9 @@ module Creek
                 processed_cells = fill_in_empty_cells(cells, row['r'], cell, use_simple_rows_format)
 
                 if @images_present
-                  processed_cells.each do |cell_name, cell_value|
-                    next unless cell_value.nil?
-                    processed_cells[cell_name] = images_at(cell_name)
+                  #processed_cells.each do |cell_name, cell_value|
+                  #  next unless cell_value.nil?
+                  #  processed_cells[cell_name] = images_at(cell_name)
                   end
                 end
 
