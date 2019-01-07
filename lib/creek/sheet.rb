@@ -94,25 +94,36 @@ module Creek
           @book.files.file.open(path) do |xml|
             Nokogiri::XML::Reader.from_io(xml).each do |node|
               if (node.name.eql? 'row') and (node.node_type.eql? opener)
+                puts 'row 1 A'
                 row = node.attributes
+                puts 'row 1 B'
                 row['cells'] = Hash.new
+                puts 'row 1 C'
                 cells = Hash.new
+                puts 'row 1 D'
                 y << (include_meta_data ? row : cells) if node.self_closing?
               elsif (node.name.eql? 'row') and (node.node_type.eql? closer)
+                puts 'row 2 A'
                 processed_cells = fill_in_empty_cells(cells, row['r'], cell, use_simple_rows_format)
+                puts 'row 2 B'
 
                 if @images_present
-                  #processed_cells.each do |cell_name, cell_value|
-                  #  next unless cell_value.nil?
-                  #  processed_cells[cell_name] = images_at(cell_name)
+                  processed_cells.each do |cell_name, cell_value|
+                    next unless cell_value.nil?
+                    processed_cells[cell_name] = images_at(cell_name)
                   end
                 end
 
+                puts 'row 2 C'
                 row['cells'] = processed_cells
+                puts 'row 2 D'
                 y << (include_meta_data ? row : processed_cells)
               elsif (node.name.eql? 'c') and (node.node_type.eql? opener)
+                puts 'row 3 A'
                 cell_type      = node.attributes['t']
+                puts 'row 3 B'
                 cell_style_idx = node.attributes['s']
+                puts 'row 3 C'
                 cell           = node.attributes['r']
               elsif (['v', 't'].include? node.name) and (node.node_type.eql? opener)
                 unless cell.nil?
